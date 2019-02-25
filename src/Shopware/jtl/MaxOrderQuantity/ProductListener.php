@@ -32,7 +32,7 @@ class ProductListener
 
                         $detailSW = ShopUtil::entityManager()->find(Detail::class, $detailId);
                         if ($detailSW !== null) {
-                            $detailSW->setMaxPurchase((int) $i18n->getValue());
+                            $detailSW->setMaxPurchase((int)$i18n->getValue());
 
                             ShopUtil::entityManager()->persist($detailSW);
                             ShopUtil::entityManager()->flush($detailSW);
