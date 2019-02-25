@@ -25,12 +25,12 @@ class ProductListener
         try {
             foreach ($event->getProduct()->getAttributes() as $attribute) {
                 foreach ($attribute->getI18ns() as $i18n) {
-                    if ($i18n->getLanguageISO() === LanguageUtil::map(Shopware()->Shop()->getLocale()->getLocale())
+                    if ($i18n->getLanguageISO() === LanguageUtil::map(ShopUtil::locale()->getLocale())
                         && $i18n->getName() === 'max_order_quantity') {
 
                         list($detailId, $productId) = IdConcatenator::unlink($event->getProduct()->getId()->getEndpoint());
 
-                        $detailSW = Shopware()->Models()->find(Detail::class, $detailId);
+                        $detailSW = ShopUtil::entityManager()->find(Detail::class, $detailId);
                         if ($detailSW !== null) {
                             $detailSW->setMaxPurchase((int) $i18n->getValue());
 
@@ -41,8 +41,8 @@ class ProductListener
                     }
                 }
             }
-        } catch (\Throwable $ex) {
-            Logger::write(ExceptionFormatter::format($ex), Logger::WARNING, 'plugin');
+        } catch (\Throwable $e) {
+            Logger::write(ExceptionFormatter::format($e), Logger::WARNING, 'plugin');
         }
     }
 }
