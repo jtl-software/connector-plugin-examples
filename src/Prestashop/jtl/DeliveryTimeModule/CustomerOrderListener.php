@@ -72,15 +72,26 @@ class CustomerOrderListener
      */
     protected function getDeliveryTimeParams($orderId)
     {
-        return $this->database->getRow(
-            sprintf('SELECT 
+        $orderData = $this->database->getRow(
+            sprintf('SELECT id_cart FROM %sorders WHERE id_order = %s',
+                $this->database->getPrefix(), $orderId
+            )
+        );
+
+        $deliveryTimeParams = false;
+        if (isset($orderData['id_cart'])) {
+            $deliveryTimeParams = $this->database->getRow(
+                sprintf('SELECT 
                             from_time AS delivery_time_from,
                             to_time AS delivery_time_to, 
                             delivery_day AS delivery_time_day 
                         FROM %sdelivery_time_order 
                         WHERE id_cart = %s',
-                $this->database->getPrefix(), $orderId
-            )
-        );
+                    $this->database->getPrefix(), $orderData['id_cart']
+                )
+            );
+        }
+
+        return $deliveryTimeParams;
     }
 }
