@@ -3,12 +3,12 @@
  * @copyright 2010-2013 JTL-Software GmbH
  */
 
-namespace Jtl\SubshopCompanies;
+namespace jtl\SubshopCompanies;
 
 use jtl\Connector\Event\CustomerOrder\CustomerOrderAfterPullEvent;
 use jtl\Connector\Plugin\IPlugin;
-use \Symfony\Component\EventDispatcher\EventDispatcher;
-use Jtl\SubshopCompanies\Listener\CustomerOrderListener;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use jtl\SubshopCompanies\Listener\CustomerOrderListener;
 
 class Bootstrap implements IPlugin
 {
