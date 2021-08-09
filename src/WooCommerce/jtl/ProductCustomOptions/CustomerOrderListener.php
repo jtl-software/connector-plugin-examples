@@ -40,14 +40,17 @@ class CustomerOrderListener
             $customerOrder = $event->getCustomerOrder();
             $customerOrderItems = $customerOrder->getItems();
             foreach ($customerOrderItems as $customerOrderItem) {
-                $customProductOptionsInfo = $this->getCustomProductOptions((int)$customerOrderItem->getId()->getEndpoint());
-                if (!empty($customProductOptionsInfo)) {
-                    $orderItemNotes = [];
-                    if (!empty($customerOrderItem->getNote())) {
-                        $orderItemNotes[] = $customerOrderItem->getNote();
+                $orderItemId = $customerOrderItem->getId();
+                if (!empty($orderItemId->getEndpoint())) {
+                    $customProductOptionsInfo = $this->getCustomProductOptions((int)$orderItemId->getEndpoint());
+                    if (!empty($customProductOptionsInfo)) {
+                        $orderItemNotes = [];
+                        if (!empty($customerOrderItem->getNote())) {
+                            $orderItemNotes[] = $customerOrderItem->getNote();
+                        }
+                        $orderItemNotes[] = sprintf('%s: %s', 'Extra Product Options', $customProductOptionsInfo);
+                        $customerOrderItem->setNote(join(', ', $orderItemNotes));
                     }
-                    $orderItemNotes[] = sprintf('%s: %s', 'Extra Product Options', $customProductOptionsInfo);
-                    $customerOrderItem->setNote(join(', ', $orderItemNotes));
                 }
             }
         }
